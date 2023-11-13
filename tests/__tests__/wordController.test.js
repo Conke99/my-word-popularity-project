@@ -8,7 +8,7 @@ test("calculatePopularityScore returns a valid score", async () => {
     Promise.resolve({ total_count: 10 })
   );
 
-  githubService.searchGitHubIssues = mockSearchGitHubIssues;
+  githubService.searchGitHubIssues.mockImplementation(mockSearchGitHubIssues);
 
   const term = "test";
   const score = await wordController.calculatePopularityScore(term);

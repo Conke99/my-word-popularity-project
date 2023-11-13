@@ -36,4 +36,4 @@ const getPopularityScore = async (req, res) => {
   }
 };
 
-module.exports = { getPopularityScore };
+module.exports = { calculatePopularityScore, getPopularityScore };
