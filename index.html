@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Word Popularity Checker</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+
+      label {
+        font-weight: bold;
+      }
+
+      input {
+        margin-bottom: 10px;
+        padding: 8px;
+      }
+
+      button {
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      #result {
+        margin-top: 20px;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Word Popularity Checker</h1>
+    <form id="wordForm">
+      <label for="word">Enter a word:</label>
+      <input type="text" id="word" name="word" required />
+      <button type="button" onclick="getPopularityScore()">
+        Check Popularity
+      </button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+      async function getPopularityScore() {
+        const wordInput = document.getElementById("word");
+        const resultDiv = document.getElementById("result");
+
+        try {
+          const response = await fetch(
+            `http://localhost:3000/api/score?term=${wordInput.value}`
+          );
+          const data = await response.json();
+
+          const rocksSucksInfo = getRocksSucksInfo(data.score);
+
+          resultDiv.innerHTML = `
+            <p>Popularity score for '${data.term}': ${data.score.toFixed(2)}</p>
+            <p>${rocksSucksInfo}</p>
+          `;
+        } catch (error) {
+          resultDiv.innerHTML =
+            "<p>An error occurred while fetching the data.</p>";
+        }
+      }
+
+      function getRocksSucksInfo(score) {
+        if (score > 5) {
+          return "This word rocks!";
+        } else if (score < 5) {
+          return "This word sucks!";
+        } else {
+          return "This word is neutral.";
+        }
+      }
+    </script>
+  </body>
+</html>
